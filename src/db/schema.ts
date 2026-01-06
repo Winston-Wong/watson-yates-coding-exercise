@@ -1,0 +1,10 @@
+import { boolean, text, serial, pgTable } from "drizzle-orm/pg-core";
+
+export const tasks = pgTable("tasks", {
+  id: serial("id").primaryKey().notNull(),
+  name: text("name").notNull(),
+  isDone: boolean("is_done").notNull(),
+});
+
+export type SelectTask = typeof tasks.$inferSelect;
+export type InsertTask = typeof tasks.$inferInsert;
