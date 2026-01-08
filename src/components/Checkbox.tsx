@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { mutate } from "swr";
 
+
 export default function Checkbox({
   task_id,
   isDone,
@@ -13,9 +14,19 @@ export default function Checkbox({
   const [checked, setChecked] = useState(isDone);
 
   const handleClick = async () => {
-    setChecked(!checked);
-    // TODO: make sure that 'isDone' is updated in the database
-    // ...
+    const newValue = !checked;
+    setChecked(newValue);
+    await fetch("/api/tasks", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: task_id,
+        isDone: newValue,
+      }),
+    });
+    
     mutate("/api/tasks");
   };
 
