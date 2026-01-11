@@ -2,6 +2,10 @@ import { getTasks } from "../../../db/queries/select";
 import { updateTask } from "../../../db/queries/update";
 import { createTask } from "../../../db/queries/insert";
 
+
+// Handles GET requests
+// Fetches data asynchronously
+// Returns JSON on success 
 export async function GET() {
   try {
     const tasks = await getTasks();
@@ -16,11 +20,13 @@ export async function GET() {
 
 export async function POST(request: Request) {
   
+  // Try-catch wrapper for error handling (catch unexpected errors, prevent server from crashing, return a clean error response).
   try {
-    const body = await request.json();
+    const body = await request.json(); // Reads the request body and parses it as JSON.
 
     // Validate input
-    if (!body?.name || typeof body.name !== "string") {
+    if (!body?.name || typeof body.name !== "string") { // Checks if 'body' and 'body.name' exists, and if 'body.name' is a string. 
+      // If validation fails
       return new Response(
         JSON.stringify({
           error: "Invalid request: 'name' is required and must be a string",
@@ -35,7 +41,7 @@ export async function POST(request: Request) {
     console.log("POST /api/tasks body:", body);
 
 
-    const name = body.name.trim();
+    const name = body.name.trim(); // Trim and validate empty strings
 
     if(name.length === 0) {
       return new Response(
@@ -52,8 +58,9 @@ export async function POST(request: Request) {
     // Insert into database
     const task = await createTask({ name });
 
+    // Returns the newly created task as JSON
     return new Response(JSON.stringify(task), {
-      status: 201,
+      status: 201, // Indicates a new resource was successfully created.
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
