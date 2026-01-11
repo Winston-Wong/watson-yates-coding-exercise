@@ -3,6 +3,7 @@ import { tasks } from "../db/schema";
 import { eq } from "drizzle-orm";
 
 export async function updateTaskStatus(taskId: number, isDone: boolean) {
+  // Builds and updates and UPDATE SQL query
   await db
     .update(tasks)
     .set({ isDone })
