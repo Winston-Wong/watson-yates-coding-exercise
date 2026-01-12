@@ -12,6 +12,7 @@ export default function Home() {
   const [showCompletedOnly, setShowCompletedOnly] = useState(false);
 
   // Filter tasks on the front end
+  // Why? - No additional API requests when toggling the filter, instant UI updates, 
   const visibleTasks = showCompletedOnly
     ? tasks?.filter((task) => task.isDone)
     : tasks;
